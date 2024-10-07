@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>New product</title>
+</head>
+<body>
+<form method="post" data-th-action="@{/catalogue/products/create}">
+    <label> Название <input type="text" name="title"></label>
+    <label> Описание <input type="text" name ="details"/></label>
+    <button type="submit"> Создать</button>
+</form>
+
+</body>
+</html>
