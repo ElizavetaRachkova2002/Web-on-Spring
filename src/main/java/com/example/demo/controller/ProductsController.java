@@ -3,11 +3,15 @@ package com.example.demo.controller;
 import com.example.demo.controller.payload.NewProductPayload;
 import com.example.demo.entity.Product;
 import com.example.demo.service.InterfaceProductService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.PublicKey;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Controller
@@ -38,16 +42,12 @@ public class ProductsController {
     @GetMapping("{Id:\\d+}") //переменная пути
     public String getProduct(@PathVariable("Id") int Id, Model model) {
         Optional<Product> optionalProduct = this.productService.findProduct(Id);
-        if (optionalProduct.isPresent()) {
-            Product product = optionalProduct.get(); // Получаем продукт из Optional
+        Product product = optionalProduct.get(); // Получаем продукт из Optional
             model.addAttribute("product", product);
             return "catalogue/products/product";
-        } else {
-            // Обработка случая, когда продукт не найден
-            return "redirect:/catalogue/products/list"; // Или другая обработка
         }
 
-    }
+
 
    @GetMapping("/{Id}/edit")
    public String getProductEditPage(@PathVariable("Id") int id, Model model){
@@ -75,6 +75,13 @@ public class ProductsController {
    {
   this.productService.deleteProduct(deleteProduct.getId());
        return "redirect:/catalogue/products/list";
+   }
+
+   @ExceptionHandler(NoSuchElementException.class)
+    public String NoSuchElementException(NoSuchElementException exception, Model model, HttpServletResponse response){
+        response.setStatus(HttpStatus.NOT_FOUND.value());
+        model.addAttribute("error", exception.getMessage());
+        return "catalogue/products/errors/404";
    }
 
 }
