@@ -2,15 +2,16 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Edit Product</title>
+  <title>Редактировать товар</title>
 </head>
 <body>
-<h1>Edit Product</h1>
+<h1>Редактировать товар</h1>
  <form th:action="@{/catalogue/products/{id}/edit(id=${product.id})}" method="post">
-     <input type="text" name="title" th:value="${product.title}">
-     <input type="text" name="details" th:value="${product.details}">
-   <button type="submit">Update Product</button>
+     <label> Название <input type="text" name="title" th:value="${product.title}"> </label>
+     <label> Описание <input type="text" name="details" th:value="${product.details}"> </label>
+   <button type="submit">Обновить товар</button>
    </form>
+<br>
 <a href="/catalogue/products/list">Вернуться к списку продуктов</a>
 </body>
 </html>
